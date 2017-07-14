@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'linkely.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'linkely',
         'USER': 'linkely',
         'PASSWORD': 'YWNiminE8SMQ',
