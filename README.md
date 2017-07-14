@@ -16,6 +16,7 @@ $ pip install -r requirements.txt
 $ docker-compose up
 $ cd linkely
 $ ./manage.py migrate
+$ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```
 

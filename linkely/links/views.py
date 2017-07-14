@@ -1,6 +1,8 @@
 #from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Article
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the links index.")
-
+    latest_articles = Article.objects.order_by('-date')[:20]
+    output = ', '.join([a.title for a in latest_articles])
+    return HttpResponse(output)
