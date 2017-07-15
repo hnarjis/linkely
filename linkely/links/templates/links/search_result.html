@@ -1,0 +1,9 @@
+{% if search_results %}
+  <ul>
+    {% for article in search_results %}
+      <li><a href="{{ article.url }}">{{ article.title }} - {{ article.url }}</a></li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No articles found.</p>
+{% endif %}
