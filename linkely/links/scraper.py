@@ -24,7 +24,7 @@ def scrape(article):
     response = requests.get(article.url)
     document = None
     if response.ok:
-        document = BeautifulSoup(response.text, 'lxml')
+        document = BeautifulSoup(response.content, 'lxml')
     title = guess_title(document, article.url)
     if title:
         article.title = title
