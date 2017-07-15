@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: postgres
+    image: postgres:9.6.3
     environment:
       - POSTGRES_USER=linkely
       # TODO: Manage secrets in a better way
@@ -11,6 +11,7 @@ services:
     ports:
       - "5432:5432"
     # TODO: Add volumes for persistence
+
   # web:
   #   build: .
   #   command: python3 manage.py runserver 0.0.0.0:8000
@@ -20,3 +21,8 @@ services:
   #     - "8000:8000"
   #   depends_on:
   #     - db
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.0
+    ports:
+      - "9200:9200"
