@@ -2,6 +2,7 @@ from django.views import generic
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Article
+from .scraper import scrape
 
 class IndexView(generic.ListView):
     template_name = 'links/index.html'
@@ -18,7 +19,5 @@ def add(request):
     else:
         article = Article(url=url)
         article.save()
-        #scraper.update(article)
-        import time
-        time.sleep(5)
+        scrape(article)
         return HttpResponseRedirect(reverse('links:index'))
