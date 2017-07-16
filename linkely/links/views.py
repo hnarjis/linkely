@@ -27,8 +27,6 @@ def add(request):
 
 
 def search(request):
-    template_name = 'links/search_result.html'
-    context_object_name = 'search_results'
     querystring = request.GET.get('q', '')
     context = {'search_results': None, 'error': None, 'search_query': querystring}
 
@@ -55,3 +53,6 @@ def search(request):
     context['search_results'] = articles
 
     return render(request, 'links/search_result.html', context)
+
+def login(request):
+    return render(request, 'login/login.html')
