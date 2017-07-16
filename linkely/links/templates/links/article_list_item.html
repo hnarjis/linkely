@@ -5,8 +5,12 @@
     <a href="{{ article.url }}" class="header">
       {{ article.title }}
     </a>
-    <a href="{{ article.url }}" class="tiny">
-      ({{ article.url | domain_name }})
-    </a>
+
+    <div class="extra">
+      <a href="{{ article.url }}" class="tiny">
+        {{ article.url | domain_name }}
+      </a>
+      posted {{ article.date | timesince }} ago {% if article.user %} by {{ article.user }} {% endif %}
+    </div>
   </div>
 </div>

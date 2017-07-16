@@ -24,7 +24,7 @@ def add(request):
     except KeyError:
         raise Exception("Missing URL.")
     else:
-        article = Article(url=url)
+        article = Article(url=url, user=request.user)
         article.save()
         scrape(article)
         return HttpResponseRedirect(reverse('index'))
