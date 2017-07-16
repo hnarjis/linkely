@@ -1,11 +1,13 @@
-{% include "links/header.html" %}
+{% extends "base.html" %}
 
-{% if search_results %}
-  <ul>
-    {% for article in search_results %}
-      <li><a href="{{ article.url }}">{{ article.title }} - {{ article.url }}</a></li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No articles found.</p>
-{% endif %}
+{% block content %}
+  {% if search_results %}
+    <ul>
+      {% for article in search_results %}
+        {% include "links/article_list_item.html" %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No articles found.</p>
+  {% endif %}
+{% endblock %}
