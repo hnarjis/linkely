@@ -1,37 +1,28 @@
-<div class="ui fixed inverted blue menu">
-  <div class="ui stackable four column grid">
-    <div class="column">
-      <a href="/" class="header item">
-        <!--<img class="logo" src="assets/images/logo.png">-->
-        <i class="book icon"></i>
-        Linkely
-      </a>
-    </div>
+<div class="ui fixed inverted blue massive menu">
 
-    <div class="column">
-      <div class="item">
-        <form action="{% url 'links:add' %}" method="post">
-          {% csrf_token %}
-          <div class="ui input mini inverted transparent">
-            <input type="text" name="url" id="url" placeholder="Add article URL">
-          </div>
-        </form>
+  <a href="/" class="ui header item logo" id="topleft_logo">
+    Linkely
+  </a>
+
+  <div class="item">
+    <form action="{% url 'links:add' %}" method="post">
+      {% csrf_token %}
+      <div class="ui input inverted transparent">
+        <input type="text" name="url" id="url" placeholder="Add article URL">
       </div>
+    </form>
+  </div>
+
+  <div class="right menu">
+    <div class="item">
+      <form action="{% url 'links:search' %}" method="get">
+        <div class="ui icon input inverted transparent">
+          <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
+          <i class="search icon inverted"></i>
+        </div>
+      </form>
     </div>
 
-    <div class="column">
-      <div class="item">
-        <form action="{% url 'links:search' %}" method="get">
-          <div class="ui icon input mini inverted transparent">
-            <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
-            <i class="search icon inverted"></i>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="item"><a href="{% url 'logout' %}">Log out {{ user.username }}</a></div>
-    </div>
+    <div class="item"><a href="{% url 'logout' %}">Log out {{ user.username }}</a></div>
   </div>
 </div>

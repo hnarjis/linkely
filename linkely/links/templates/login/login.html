@@ -19,11 +19,9 @@
 {% block container %}
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui blue image header">
-      <div class="content">
-        Linkely
-      </div>
-    </h2>
+    <h1 class="ui blue header logo">
+      Linkely
+    </h1>
     <form class="ui large form" action="{% url 'login' %}" method="post">
       {% csrf_token %}
       <div class="ui stacked segment">

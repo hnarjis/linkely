@@ -1,0 +1,18 @@
+.main.container {
+    margin-top: 7em;
+}
+
+.header.logo {
+    font-family: 'Lobster Two' !important;
+    font-weight: normal !important;
+
+}
+
+.ui.header.logo {
+    font-size: 5.5rem;
+}
+
+#topleft_logo {
+    font-size: 2rem;
+}
+
