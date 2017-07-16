@@ -5,15 +5,19 @@ from django.shortcuts import render
 from elasticsearch import Elasticsearch
 from .models import Article
 from .scraper import scrape
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+    login_url = '/login'
     template_name = 'links/index.html'
     context_object_name = 'latest_articles'
 
     def get_queryset(self):
         return Article.objects.order_by('-date')[:20]
 
-
+@login_required(login_url='/login')
 def add(request):
     try:
         url = request.POST['url']
@@ -23,9 +27,9 @@ def add(request):
         article = Article(url=url)
         article.save()
         scrape(article)
-        return HttpResponseRedirect(reverse('links:index'))
+        return HttpResponseRedirect(reverse('index'))
 
-
+@login_required(login_url='/login')
 def search(request):
     querystring = request.GET.get('q', '')
     context = {'search_results': None, 'error': None, 'search_query': querystring}
@@ -44,7 +48,7 @@ def search(request):
         }
         res = es.search(index="articles", body=query)
     except Exception as ex:
-        context['error': 'Something went wrong :( %r' % ex]
+        context['error'] = 'Something went wrong :( %r' % ex
 
     articles = [Article.objects.get(pk=article['_id'])
                 for article
@@ -55,4 +59,18 @@ def search(request):
     return render(request, 'links/search_result.html', context)
 
 def login(request):
-    return render(request, 'login/login.html')
+    context = {}
+
+    if request.POST.get('username'):
+        user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+        if user is not None:
+            auth_login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            context['error'] = 'Wrong username or password.'
+
+    return render(request, 'login/login.html', context)
+
+def logout(request):
+    auth_logout(request)
+    return HttpResponseRedirect(reverse('login'))

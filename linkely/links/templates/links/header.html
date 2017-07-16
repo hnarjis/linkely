@@ -1,3 +1,5 @@
+<p>Welcome, {{ user.username }}. <a href="{% url 'logout' %}">Log out.</a></p>
+
 <form action="{% url 'links:add' %}" method="post">
 {% csrf_token %}
 <input type="text" name="url" id="url" placeholder="Enter article URL here." />

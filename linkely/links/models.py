@@ -9,5 +9,3 @@ class Article(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.title, self.url)
-
-# TODO: Add model for the user

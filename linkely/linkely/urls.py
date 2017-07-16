@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-from links.views import IndexView, login
+from links.views import IndexView, login, logout
 
 urlpatterns = [
-    url(r'^$', IndexView.as_view()),
+    url(r'^$', IndexView.as_view(), name="index"),
     url(r'^links/', include('links.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^login$', login, name="login")
+    url(r'^login$', login, name="login"),
+    url(r'^logout$', logout, name="logout"),
 ]
