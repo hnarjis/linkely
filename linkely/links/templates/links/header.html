@@ -2,6 +2,9 @@
 {% load static %}
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static "semantic/semantic.min.css" %}">
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -12,19 +15,3 @@
 <body>
 
 {% include "links/menu.html" %}
-
-<p>Welcome, {{ user.username }}. <a href="{% url 'logout' %}">Log out.</a></p>
-
-<form action="{% url 'links:add' %}" method="post">
-{% csrf_token %}
-<div class="ui input">
-  <input type="text" name="url" id="url" placeholder="Enter article URL here.">
-</div>
-</form>
-
-<form action="{% url 'links:search' %}" method="get">
-<div class="ui icon input">
-  <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
-  <i class="search icon"></i>
-</div>
-</form>
