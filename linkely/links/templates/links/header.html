@@ -1,3 +1,9 @@
+<form action="{% url 'links:add' %}" method="post">
+{% csrf_token %}
+<input type="text" name="url" id="url" placeholder="Enter article URL here." />
+<input type="submit" value="Add" />
+</form>
+
 <form action="{% url 'links:search' %}" method="get">
 <input type="text" name="q" id="q" placeholder="Search for keywords." value="{{ search_query }}" />
 <input type="submit" value="Search" />
