@@ -9,11 +9,11 @@
     },
     "output": {
       "packaged": "../../linkely/static/semantic/",
-      "uncompressed": "dist/components/",
-      "compressed": "dist/components/",
-      "themes": "dist/themes/"
+      "uncompressed": "../../linkely/static/semantic/components/",
+      "compressed": "../../linkely/static/semantic/components/",
+      "themes": "../../linkely/static/semantic/themes/"
     },
-    "clean": "dist/"
+    "clean": "../../linkely/static/semantic/"
   },
   "permission": false,
   "autoInstall": false,

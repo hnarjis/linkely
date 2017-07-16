@@ -9,17 +9,22 @@
     crossorigin="anonymous"></script>
     <script src="{% static "semantic/semantic.js" %}"></script>
   </head>
-  <body>
+<body>
+
+{% include "links/menu.html" %}
 
 <p>Welcome, {{ user.username }}. <a href="{% url 'logout' %}">Log out.</a></p>
 
 <form action="{% url 'links:add' %}" method="post">
 {% csrf_token %}
-<input type="text" name="url" id="url" placeholder="Enter article URL here." />
-<input type="submit" value="Add" class="ui button" />
+<div class="ui input">
+  <input type="text" name="url" id="url" placeholder="Enter article URL here.">
+</div>
 </form>
 
 <form action="{% url 'links:search' %}" method="get">
-<input type="text" name="q" id="q" placeholder="Search for keywords." value="{{ search_query }}" />
-<input type="submit" value="Search" />
+<div class="ui icon input">
+  <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
+  <i class="search icon"></i>
+</div>
 </form>
