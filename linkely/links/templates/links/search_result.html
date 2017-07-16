@@ -2,11 +2,11 @@
 
 {% block content %}
   {% if search_results %}
-    <ul>
+    <div class="ui items">
       {% for article in search_results %}
         {% include "links/article_list_item.html" %}
       {% endfor %}
-    </ul>
+    </div>
   {% else %}
     <p>No articles found.</p>
   {% endif %}

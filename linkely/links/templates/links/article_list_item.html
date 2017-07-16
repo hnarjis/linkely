@@ -1,6 +1,12 @@
-<li>
-  <a href="{{ article.url }}">
-    {{ article.title }} <br>
-    {{ article.url }}
-  </a>
-</li>
+{% load links_extras %}
+
+<div class="ui item">
+  <div class="middle aligned content">
+    <a href="{{ article.url }}" class="header">
+      {{ article.title }}
+    </a>
+    <a href="{{ article.url }}" class="tiny">
+      ({{ article.url | domain_name }})
+    </a>
+  </div>
+</div>
