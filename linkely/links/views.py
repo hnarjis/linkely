@@ -1,3 +1,4 @@
+import hashlib
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -5,9 +6,11 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.admin import User
 from .wiring import es_client
 from .models import Article
 from .scraper import scrape
+
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     login_url = '/login'
@@ -16,6 +19,18 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Article.objects.order_by('-date')[:20]
+
+
+@login_required(login_url='/login')
+def user(request, username):
+    template_name = 'links/user.html'
+    context_object_name = 'user_articles'
+    articles = Article.objects.filter(user__username=username)
+    user = User.objects.get(username=username)
+    gravatar = '//www.gravatar.com/avatar/{hash}?s=80'.format(
+        hash=hashlib.md5(user.email.encode('latin-1').strip().lower()).hexdigest())
+    return render(request, 'links/user.html', {'user_articles': articles, 'profile': user, 'gravatar': gravatar})
+
 
 @login_required(login_url='/login')
 def add(request):
@@ -28,6 +43,7 @@ def add(request):
         article.save()
         scrape(article)
         return HttpResponseRedirect(reverse('index'))
+
 
 @login_required(login_url='/login')
 def search(request):
@@ -57,6 +73,7 @@ def search(request):
 
     return render(request, 'links/search_result.html', context)
 
+
 def login(request):
     context = {}
 
@@ -69,6 +86,7 @@ def login(request):
             context['error'] = 'Wrong username or password.'
 
     return render(request, 'login/login.html', context)
+
 
 def logout(request):
     auth_logout(request)

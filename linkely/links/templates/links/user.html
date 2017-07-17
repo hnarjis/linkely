@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+  {% if error %}
+    <div class="ui message error">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  <div class="ui items">
+    <div class="ui item">
+      <div class="ui tiny image">
+        <img src="{{ gravatar }}">
+      </div>
+      <div class="content">
+        {% if profile.get_full_name %}
+          <div class="header">{{ profile.get_full_name }} ({{ profile.username }})</div>
+        {% else %}
+          <div class="header">{{ profile.username }}</div>
+        {% endif %}
+        <div class="meta">
+          {{ profile.get_short_name | default:profile.username}} joined Linkely {{ profile.date_joined | timesince }} ago and
+          has posted {{ user_articles.count | apnumber }} articles.
+        </div>
+        <div class="description">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% if user_articles %}
+    <div class="ui items">
+      {% for article in user_articles %}
+        {% include "links/article_list_item.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>This user hasn't added any articles yet.</p>
+  {% endif %}
+{% endblock %}
