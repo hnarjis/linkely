@@ -25,7 +25,7 @@ SECRET_KEY = 'z=43ebjrl-rrciyiau)5sr06&ww)k5=y=*)!_f&be!q!4fh^@@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['linkely.co', 'www.linkely.co']
 
 
 # Application definition
