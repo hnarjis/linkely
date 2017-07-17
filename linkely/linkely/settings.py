@@ -100,7 +100,7 @@ DATABASES = {
         'PORT': '5432',
     },
     'elasticsearch': {
-        'HOST': 'localhost',
+        'HOST': env('ES_HOST', 'localhost'),
         'PORT': 9200,
         'USER': env('ES_USER', 'elastic'),
         'PASSWORD': env('ES_PASSWORD', 'changeme')
