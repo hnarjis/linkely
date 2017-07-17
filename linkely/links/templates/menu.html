@@ -6,10 +6,10 @@
       </a>
     </div>
 
-    <form action="{% url 'links:add' %}" method="post" class="ten wide column">
+    <form action="{% url 'links:add' %}" method="post" class="ui form ten wide column" id="add_url">
       {% csrf_token %}
       <div class="fitted item">
-        <div class="ui input">
+        <div class="ui input field">
           <input type="text" name="url" id="url" placeholder="Add article URL" />
         </div>
       </div>
