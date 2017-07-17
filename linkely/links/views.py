@@ -18,9 +18,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     login_url = '/login'
     template_name = 'links/index.html'
     context_object_name = 'latest_articles'
+    paginate_by = 25
 
     def get_queryset(self):
-        return Article.objects.order_by('-date')[:20]
+        return Article.objects.order_by('-date')
 
 
 @login_required(login_url='/login')
