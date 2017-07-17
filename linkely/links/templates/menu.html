@@ -7,7 +7,7 @@
   <div class="item">
     <form action="{% url 'links:add' %}" method="post">
       {% csrf_token %}
-      <div class="ui input inverted transparent">
+      <div class="ui input">
         <input type="text" name="url" id="url" placeholder="Add article URL">
       </div>
     </form>
@@ -23,6 +23,6 @@
       </form>
     </div>
 
-    <div class="item"><a href="{% url 'logout' %}">Log out {{ user.username }}</a></div>
+    <div class="item"><a href="{% url 'logout' %}">Log out</a></div>
   </div>
 </div>
