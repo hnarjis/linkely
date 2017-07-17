@@ -48,12 +48,12 @@ def search(request):
         res = es.search(index="articles", body=query)
     except Exception as ex:
         context['error'] = 'Something went wrong :( %r' % ex
+    else:
+        articles = [Article.objects.get(pk=article['_id'])
+                    for article
+                    in res.get('hits', []).get('hits', [])]
 
-    articles = [Article.objects.get(pk=article['_id'])
-                for article
-                in res.get('hits', []).get('hits', [])]
-
-    context['search_results'] = articles
+        context['search_results'] = articles
 
     return render(request, 'links/search_result.html', context)
 
