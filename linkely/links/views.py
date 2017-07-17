@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.admin import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from .wiring import es_client
 from .models import Article
 from .scraper import scrape
@@ -26,7 +28,11 @@ def user(request, username):
     template_name = 'links/user.html'
     context_object_name = 'user_articles'
     articles = Article.objects.filter(user__username=username)
-    user = User.objects.get(username=username)
+    try:
+        user = User.objects.get(username=username)
+    except ObjectDoesNotExist:
+        raise Http404('No user %s found' % username)
+
     gravatar = '//www.gravatar.com/avatar/{hash}?s=80'.format(
         hash=hashlib.md5(user.email.encode('latin-1').strip().lower()).hexdigest())
     return render(request, 'links/user.html', {'user_articles': articles, 'profile': user, 'gravatar': gravatar})
