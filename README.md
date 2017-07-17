@@ -1,6 +1,16 @@
 # linkely
 Keep track of saved articles
 
+## Running with docker-compose
+
+Make sure docker and docker-compose are installed.
+
+Create an `.env` file in the same directory as this file, for example
+by copying example.env. The settings in example.env allows you to run
+the application locally.
+
+Run `docker-compose build`, then `docker-compose up`.
+
 ## Getting started
 
 Prerequisites:

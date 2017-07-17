@@ -16,16 +16,32 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+def env(key, default, convert=str, environ={}):
+    """Get config items from the environment and .env file. Use convert=int for ints, etc"""
+    if not environ:
+        environ.update(os.environ)
+        try:
+            with open(os.path.join(BASE_DIR, '../.env')) as envfile:
+                for line in envfile:
+                    parts = line.strip().split('=', maxsplit=1)
+                    if len(parts) == 2:
+                        k, v = parts
+                        environ[k] = v
+        except FileNotFoundError:
+            pass
+    return convert(environ.get(key, default))
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z=43ebjrl-rrciyiau)5sr06&ww)k5=y=*)!_f&be!q!4fh^@@'
+SECRET_KEY = env('DJANGO_SECRET_KEY', 'pleasechangeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DJANGO_DEBUG', 'true', convert=lambda x: x.lower() == 'true')
 
-ALLOWED_HOSTS = ['linkely.co', 'www.linkely.co']
+ALLOWED_HOSTS = [env('DJANGO_HOSTNAME', 'localhost'), 'linkely.co', 'www.linkely.co']
 
 
 # Application definition
@@ -77,20 +93,17 @@ WSGI_APPLICATION = 'linkely.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'linkely',
-        'USER': 'linkely',
-        'PASSWORD': 'YWNiminE8SMQ',
-        'HOST': 'db',
+        'NAME': env('POSTGRES_DB', 'linkely'),
+        'USER': env('POSTGRES_USER', 'linkely'),
+        'PASSWORD': env('POSTGRES_PASSWORD', ''),
+        'HOST': env('POSTGRES_HOST', 'localhost'),
         'PORT': '5432',
-    }
-}
-
-ELASTICSEARCH = {
-    'default': {
-        'HOST': 'es',
+    },
+    'elasticsearch': {
+        'HOST': 'localhost',
         'PORT': 9200,
-        'USER': 'elastic',
-        'PASSWORD': 'changeme'
+        'USER': env('ES_USER', 'elastic'),
+        'PASSWORD': env('ES_PASSWORD', 'changeme')
     }
 }
 

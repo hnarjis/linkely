@@ -5,8 +5,6 @@ services:
     image: postgres:9.6.3
     environment:
       - POSTGRES_USER=linkely
-      # TODO: Manage secrets in a better way
-      - POSTGRES_PASSWORD=YWNiminE8SMQ
       - POSTGRES_DB=linkely
     ports:
       - "5432:5432"

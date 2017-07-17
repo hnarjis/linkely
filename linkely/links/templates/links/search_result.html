@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% if error %}
+    <div class="ui message error">
+      {{ error }}
+    </div>
+  {% endif %}
+
   {% if search_results %}
     <div class="ui items">
       {% for article in search_results %}

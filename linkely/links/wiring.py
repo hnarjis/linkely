@@ -2,7 +2,7 @@ from django.conf import settings
 from elasticsearch import Elasticsearch
 
 def es_client():
-    conf = settings.ELASTICSEARCH['default']
+    conf = settings.DATABASES['elasticsearch']
     url = 'http://{user}:{password}@{host}:{port}'.format(
         user = conf['USER'],
         password = conf['PASSWORD'],
