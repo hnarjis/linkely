@@ -16,3 +16,6 @@
     font-size: 2rem;
 }
 
+.item .content a.header:visited {
+    color: #777 !important;
+}
