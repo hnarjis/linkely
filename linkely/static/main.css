@@ -1,5 +1,5 @@
 .main.container {
-    padding-top: 8em;
+    margin-top: 3em;
 }
 
 .header.logo {
@@ -18,4 +18,17 @@
 
 .item .content a.header:visited {
     color: #777 !important;
+}
+
+#linkely_menu div.column {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#linkely_menu div.ui.grid.container.item {
+    margin-top: -1em;
+    margin-bottom: -1em;
+    margin-left: -1em !important;
+    margin-right: -1em !important;
+    width: 100% !important;
 }

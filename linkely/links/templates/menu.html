@@ -1,28 +1,35 @@
-<div class="ui fixed inverted blue massive menu">
-
-  <a href="/" class="ui header item logo" id="topleft_logo">
-    Linkely
-  </a>
-
-  <div class="item">
-    <form action="{% url 'links:add' %}" method="post">
-      {% csrf_token %}
-      <div class="ui input">
-        <input type="text" name="url" id="url" placeholder="Add article URL">
-      </div>
-    </form>
-  </div>
-
-  <div class="right menu">
-    <div class="item">
-      <form action="{% url 'links:search' %}" method="get">
-        <div class="ui icon input inverted transparent">
-          <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
-          <i class="search icon inverted"></i>
-        </div>
-      </form>
+<div class="ui inverted blue massive stackable secondary menu" id="linkely_menu">
+  <div class="ui grid container item">
+    <div class="two wide column">
+      <a href="/" class="ui header item logo" id="topleft_logo">
+        Linkely
+      </a>
     </div>
 
-    <div class="item"><a href="{% url 'logout' %}">Log out</a></div>
+    <form action="{% url 'links:add' %}" method="post" class="ten wide column">
+      {% csrf_token %}
+      <div class="item">
+        <div class="ui input fluid">
+          <input type="text" name="url" id="url" placeholder="Add article URL" />
+        </div>
+      </div>
+    </form>
+
+    <div class="three wide column right menu">
+      <div class="item">
+        <form action="{% url 'links:search' %}" method="get">
+          <div class="ui icon input inverted transparent">
+            <input type="text" name="q" id="q" value="{{ search_query }}" placeholder="Search..." />
+            <i class="search icon inverted"></i>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="one wide column right menu">
+      <div class="item">
+        <a href="{% url 'logout' %}">Log out</a>
+      </div>
+    </div>
   </div>
 </div>
