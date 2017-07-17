@@ -80,8 +80,17 @@ DATABASES = {
         'NAME': 'linkely',
         'USER': 'linkely',
         'PASSWORD': 'YWNiminE8SMQ',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '5432',
+    }
+}
+
+ELASTICSEARCH = {
+    'default': {
+        'HOST': 'es',
+        'PORT': 9200,
+        'USER': 'elastic',
+        'PASSWORD': 'changeme'
     }
 }
 

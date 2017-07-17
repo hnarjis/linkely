@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
-from elasticsearch import Elasticsearch
 import requests
 import re
+from .wiring import es_client
 
 def normalize_url(url):
     if not url.lower().startswith('http'):
@@ -32,9 +32,7 @@ def scrape(article):
     index(article, document)
 
 def index(article, document):
-    # TODO: figure out when to instantiate ES
-    # TODO: manage passwords in a better way
-    es = Elasticsearch(['http://elastic:changeme@localhost:9200'])
+    es = es_client()
 
     doc = {
         'title': article.title,

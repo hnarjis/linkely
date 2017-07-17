@@ -2,12 +2,12 @@ from django.views import generic
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
-from elasticsearch import Elasticsearch
-from .models import Article
-from .scraper import scrape
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .wiring import es_client
+from .models import Article
+from .scraper import scrape
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     login_url = '/login'
@@ -35,9 +35,8 @@ def search(request):
     context = {'search_results': None, 'error': None, 'search_query': querystring}
 
     # TODO: empty query should show zero results
-    # TODO: make an elasticsearch client factory or something
     try:
-        es = Elasticsearch(['http://elastic:changeme@localhost:9200'])
+        es = es_client()
         query = {
             "query": {
                 "multi_match" : {
