@@ -1,5 +1,5 @@
 # linkely
-Keep track of saved articles
+Keep track of shared articles
 
 ## Running with docker-compose
 
