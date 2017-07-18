@@ -47,6 +47,7 @@ def add(request):
     try:
         data = json.loads(request.body)
         article = Article(url=data['url'], user=request.user)
+        article.save() # We need an id for the article before it's scraped
         scrape(article)
         article.save()
         template = loader.get_template('links/article_list_item.html')
