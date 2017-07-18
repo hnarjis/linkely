@@ -1,6 +1,7 @@
 import hashlib
+import json
 from django.views import generic
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.admin import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.template import loader
 from django.http import Http404
 from .wiring import es_client
 from .models import Article
@@ -41,15 +43,28 @@ def user(request, username):
 
 @login_required(login_url='/login')
 def add(request):
+    error = None
     try:
-        url = request.POST['url']
-    except KeyError:
-        raise Exception("Missing URL.")
-    else:
-        article = Article(url=url, user=request.user)
-        article.save()
+        data = json.loads(request.body)
+        article = Article(url=data['url'], user=request.user)
         scrape(article)
-        return HttpResponseRedirect(reverse('index'))
+        article.save()
+        template = loader.get_template('links/article_list_item.html')
+        html = template.render({"article": article}, request)
+        return JsonResponse({
+            'status': 'ok',
+            'article': article.as_dict(),
+            'html': html
+        })
+    except json.JSONDecodeError:
+        error = "Not valid JSON %r" % request.body
+    except KeyError:
+        error = "Missing url"
+    except ConnectionError:
+        error = "Could not connect to %r" % url
+    except Exception as ex:
+        error = str(ex)
+    return JsonResponse({'status': 'error', 'error': error}, status=500)
 
 
 @login_required(login_url='/login')

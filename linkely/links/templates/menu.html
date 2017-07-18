@@ -8,9 +8,14 @@
 
     <form action="{% url 'links:add' %}" method="post" class="ui form ten wide column" id="add_url">
       {% csrf_token %}
+      <script type="text/javascript">
+        // Allow JS to pick up the csrf token
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      </script>
       <div class="fitted item">
-        <div class="ui input field">
+        <div class="ui left icon input field">
           <input type="text" name="url" id="url" placeholder="Add article URL" />
+          <i class="linkify icon"></i>
         </div>
       </div>
     </form>

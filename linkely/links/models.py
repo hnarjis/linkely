@@ -11,3 +11,11 @@ class Article(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.title, self.url)
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "url": self.url,
+            "user": self.user.username
+        }
