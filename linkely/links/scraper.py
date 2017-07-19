@@ -36,7 +36,6 @@ def index(article, document):
     }
 
     res = es.index(index="articles", doc_type='article', id=article.id, body=doc)
-    print(res['created'])
 
     # NOTE: remove this for high volume sites
     es.indices.refresh(index="articles")
