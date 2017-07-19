@@ -2,6 +2,6 @@
 
 set -x
 
-cd linkely &&
-    ./manage.py migrate &&
-    ./manage.py runserver 0.0.0.0:8000
+pip install -r /src/requirements.txt &&
+    /src/linkely/manage.py migrate &&
+    /src/linkely/manage.py runserver 0.0.0.0:8000

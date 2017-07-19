@@ -41,7 +41,8 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', 'pleasechangeme')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG', 'true', convert=lambda x: x.lower() == 'true')
 
-ALLOWED_HOSTS = [env('DJANGO_HOSTNAME', 'localhost'), 'linkely.co', 'www.linkely.co']
+ALLOWED_HOSTS = [env('DJANGO_HOSTNAME', 'localhost'), 'backend']
+
 
 
 # Application definition
