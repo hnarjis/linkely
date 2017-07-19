@@ -32,6 +32,11 @@ $ ./manage.py runserver
 
 Now you should have the application running on [localhost:8000](http://localhost:8000)
 
+## Run tests
+
+```
+$ POSTGRES_HOST=localhost ./manage.py test
+```
 
 ## Build front-end requirements
 

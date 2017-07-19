@@ -26,7 +26,8 @@ def env(key, default, convert=str, environ={}):
                     parts = line.strip().split('=', maxsplit=1)
                     if len(parts) == 2:
                         k, v = parts
-                        environ[k] = v
+                        if k not in environ:
+                            environ[k] = v
         except FileNotFoundError:
             pass
     return convert(environ.get(key, default))
