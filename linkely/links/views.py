@@ -98,6 +98,9 @@ def search(request):
 
 
 def login(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('index'))
+
     context = {}
 
     if request.POST.get('username'):

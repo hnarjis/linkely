@@ -59,6 +59,10 @@ class LoginTestCase(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
+    def test_login_redirection(self):
+        response = self.client.get('/login')
+        self.assertRedirects(response, '/')
+
     def test_existing_user(self):
         response = self.client.get('/links/user/test')
         self.assertEqual(response.status_code, 200)
