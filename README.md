@@ -1,41 +1,48 @@
 # linkely
 Keep track of shared articles
 
-## Running with docker-compose
-
-Make sure docker and docker-compose are installed.
-
-Create an `.env` file in the same directory as this file, for example
-by copying example.env. The settings in example.env allows you to run
-the application locally.
-
-Run `docker-compose build`, then `docker-compose up`.
-
 ## Getting started
 
 Prerequisites:
 
-* Docker and docker-compose
+* Docker
+* docker-compose
+
+Clone the repo, then run:
+
+```
+$ cp example.env .env
+$ docker-compose up
+```
+
+Now you should have the application running on [localhost](http://localhost).
+
+You can log in with username 'root' and password 'root'.
+
+## Set up a local environment
+
+A local environment is needed to run tests and debug the application.
+
+Prerequisites:
+
 * Python 3
 * Python virtualenv
 
 ```
-$ virtualenv -p PATH_TO_PYTHON3_BINARY env
+$ virtualenv -p `which python3` env
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ docker-compose up
+```
+
+### Run tests
+
+Start docker-compose and configure the app to use the database running in Docker:  
+
+```
+$ docker-compose up -d
 $ cd linkely
-$ ./manage.py migrate
-$ ./manage.py createsuperuser
-$ ./manage.py runserver
-```
-
-Now you should have the application running on [localhost:8000](http://localhost:8000)
-
-## Run tests
-
-```
 $ POSTGRES_HOST=localhost ./manage.py test
+$ docker-compose down
 ```
 
 ## Build front-end requirements
