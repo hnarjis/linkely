@@ -1,6 +1,6 @@
+import re
 from bs4 import BeautifulSoup
 import requests
-import re
 from .wiring import es_client
 
 
@@ -11,7 +11,7 @@ class ScraperError(Exception):
 def guess_title(document, url):
     try:
         return document.find("title").text
-    except:
+    except:  # pylint: disable=bare-except
         pass
 
     document_name = url.split("/")[-1]
@@ -20,6 +20,7 @@ def guess_title(document, url):
 
 
 def scrape(article):
+    # TODO: This should be done in the background.
     try:
         response = requests.get(article.url)
         document = None
@@ -38,7 +39,7 @@ def index(article, document):
 
     doc = {"title": article.title, "url": article.url, "body": document.get_text()}
 
-    res = es.index(index="articles", doc_type="article", id=article.id, body=doc)
+    es.index(index="articles", doc_type="article", id=article.id, body=doc)
 
     # NOTE: remove this for high volume sites
     es.indices.refresh(index="articles")

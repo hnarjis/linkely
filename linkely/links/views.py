@@ -13,7 +13,7 @@ from django.template import loader
 from django.http import Http404
 from .wiring import es_client
 from .models import Article
-from .scraper import scrape, ScraperError
+from .scraper import ScraperError
 
 
 class LinkError(Exception):
@@ -61,9 +61,8 @@ def add(request):
         if Article.objects.filter(url__iexact=url).count() > 0:
             raise LinkError("The article already exists.")
         article = Article(url=url, user=request.user)
-        article.save()  # We need an id for the article before it's scraped
-        scrape(article)
         article.save()
+        article.scrape()
         template = loader.get_template("links/article_list_item.html")
         html = template.render({"article": article}, request)
         return JsonResponse(
@@ -82,8 +81,6 @@ def add(request):
     except LinkError as ex:
         error = str(ex)
         message = error
-    except Exception as ex:
-        error = f"{ex.__class__}: {ex}"
     return JsonResponse(
         {"status": "error", "error": error, "message": message}, status=500
     )
