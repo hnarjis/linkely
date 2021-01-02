@@ -40,6 +40,11 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.NOTICE(f"Could not scrape {article.url}: {ex}")
                 )
+            except Exception as ex:  # pylint: disable=broad-except
+                fail += 1
+                self.stdout.write(
+                    self.style.WARNING(f"Unexpected error scraping {article.url}: {ex}")
+                )
 
         self.stdout.write(
             self.style.SUCCESS(

@@ -16,7 +16,7 @@ def guess_title(document, url):
 
     document_name = url.split("/")[-1]
     document_name = re.sub("[-_]", " ", document_name)
-    return document_name.capitalize()
+    return document_name.capitalize()[:150]
 
 
 def scrape(article):
