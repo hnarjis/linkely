@@ -1,5 +1,5 @@
 from django.conf import settings
-from elasticsearch import Elasticsearch, TransportError
+from elasticsearch7.client import Elasticsearch, TransportError
 
 
 def es_client():
