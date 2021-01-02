@@ -22,7 +22,7 @@ services:
         hard: 65536
 
   web:
-    image: python:3
+    image: python:3.9.1
     volumes:
       - .:/src:ro
     command: /src/entrypoint.sh
