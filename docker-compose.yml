@@ -23,12 +23,15 @@ services:
         hard: 65536
 
   web:
-    image: python:3.9.1
+    build: docker/web/
     volumes:
       - .:/src:ro
     command: /src/entrypoint.sh
     ports:
       - "8000:8000"
+    environment:
+      - "POSTGRES_HOST=db"
+      - "ES_HOST=es"
     depends_on:
       - db
       - es

@@ -26,12 +26,12 @@ A local environment is needed to run tests and debug the application.
 Prerequisites:
 
 * Python 3
-* Python virtualenv
+* [Poetry][poetry]
+
 
 ```
-$ virtualenv -p `which python3` env
-$ source env/bin/activate
-$ pip install -r requirements.txt
+$ poetry install
+$ poetry shell
 ```
 
 ### Run tests
@@ -63,3 +63,6 @@ Then build semantic
 cd semantic
 gulp build
 ```
+
+
+[poetry]: https://python-poetry.org/

@@ -2,6 +2,7 @@
 
 set -x
 
-pip install -r /src/requirements.txt &&
-    /src/linkely/manage.py migrate &&
-    /src/linkely/manage.py runserver 0.0.0.0:8000
+cd /src/linkely &&
+    poetry install --no-dev &&
+    poetry run ./manage.py migrate &&
+    poetry run ./manage.py runserver 0.0.0.0:8000
