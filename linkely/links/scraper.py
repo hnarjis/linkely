@@ -4,6 +4,9 @@ import requests
 from .wiring import es_client
 
 
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"
+
+
 class ScraperError(Exception):
     pass
 
@@ -22,7 +25,10 @@ def guess_title(document, url):
 def scrape(article):
     # TODO: This should be done in the background.
     try:
-        response = requests.get(article.url, timeout=15)
+        headers = {"user-agent": USER_AGENT}
+        response = requests.get(
+            article.url, timeout=15, allow_redirects=True, headers=headers
+        )
         document = None
         if response.ok:
             document = BeautifulSoup(response.content, "lxml")
