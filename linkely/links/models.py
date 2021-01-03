@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 from django.db import models
 from django.contrib.auth.models import User
 from .scraper import scrape, ScraperError
@@ -20,6 +21,16 @@ class Article(models.Model):
     def scrape(self):
         scrape(self)
         self.save()
+
+    def title_or_fallback(self):
+        if self.title:
+            return self.title
+        try:
+            urlparts = urlparse(self.url)
+            title = urlparts.netloc + urlparts.path
+            return f"{title[:75]}…" if len(title) > 75 else title
+        except:
+            return self.url
 
     def as_dict(self):
         return {
