@@ -22,7 +22,7 @@ def guess_title(document, url):
 def scrape(article):
     # TODO: This should be done in the background.
     try:
-        response = requests.get(article.url)
+        response = requests.get(article.url, timeout=15)
         document = None
         if response.ok:
             document = BeautifulSoup(response.content, "lxml")
@@ -31,7 +31,7 @@ def scrape(article):
             article.title = title
         index(article, document)
     except Exception as err:
-        raise ScraperError() from err
+        raise ScraperError(str(err)) from err
 
 
 def index(article, document):
