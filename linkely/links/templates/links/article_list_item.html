@@ -3,14 +3,14 @@
 <div class="ui item">
   <div class="middle aligned content">
     <a href="{{ article.url }}" class="header">
-      {{ article.title }}
+      {{ article.title_or_fallback }}
     </a>
 
     <div class="extra">
       <a href="{{ article.url }}" class="tiny">
         {{ article.url | domain_name }}
       </a>
-      posted {{ article.date | timesince }} ago
+      posted <span title="{{ article.date }}">{{ article.date | timesince }}</span> ago
       {% if article.user %}
         by <a href="{% url 'links:user' article.user.username %}">{{ article.user }}</a>
       {% endif %}

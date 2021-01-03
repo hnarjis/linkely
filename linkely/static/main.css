@@ -20,6 +20,10 @@
     color: #777 !important;
 }
 
+.item .extra span {
+    margin: 0 !important;
+}
+
 #linkely_menu div.column {
     padding-top: 0;
     padding-bottom: 0;

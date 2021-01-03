@@ -47,7 +47,13 @@ $(function() {
                 $url.parent().removeClass('loading');
             };
 
-            var onError = function onError() {
+            var onError = function onError(errorResponse) {
+                console.log("errorResponse", errorResponse);
+                message = errorResponse.responseJSON.message
+                if (message) {
+                    alert(message);
+                }
+                console.error('Error adding article', errorResponse.responseJSON);
                 enable();
                 $url.parent().transition('shake');
             };
@@ -78,7 +84,7 @@ $(function() {
                     }
                 })
                 .fail(function addArticleFail(jqXHR, textStatus, errorThrown) {
-                    onError();
+                    onError(jqXHR);
                 });
         });
 });

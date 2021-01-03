@@ -4,3 +4,4 @@ db.sqlite3
 **/node_modules
 frontend/semantic/dist
 .env
+venv
