@@ -95,6 +95,17 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 category = "main"
+description = "Web APIs for Django, made easy."
+name = "djangorestframework"
+optional = false
+python-versions = ">=3.5"
+version = "3.12.2"
+
+[package.dependencies]
+django = ">=2.2"
+
+[[package]]
+category = "main"
 description = "Python client for Elasticsearch"
 name = "elasticsearch7"
 optional = false
@@ -335,7 +346,7 @@ python-versions = "*"
 version = "0.2.5"
 
 [metadata]
-content-hash = "332e72cc837e98e7e746e31e0f2bf10b22e4044746344994beb57c8a7cebf50a"
+content-hash = "c4f66b45efbc65ee5008ce71a8f28e9ef9a22dd862b7b4bfdf06c5fd59290de8"
 lock-version = "1.0"
 python-versions = "^3.9"
 
@@ -376,6 +387,9 @@ decorator = [
 django = [
     {file = "Django-3.1.4-py3-none-any.whl", hash = "sha256:5c866205f15e7a7123f1eec6ab939d22d5bde1416635cab259684af66d8e48a2"},
     {file = "Django-3.1.4.tar.gz", hash = "sha256:edb10b5c45e7e9c0fb1dc00b76ec7449aca258a39ffd613dbd078c51d19c9f03"},
+]
+djangorestframework = [
+    {file = "djangorestframework-3.12.2-py3-none-any.whl", hash = "sha256:0209bafcb7b5010fdfec784034f059d512256424de2a0f084cb82b096d6dd6a7"},
 ]
 elasticsearch7 = [
     {file = "elasticsearch7-7.10.1-py2.py3-none-any.whl", hash = "sha256:d93d3305f9813d7e2d4ae4ecfb02d1539791f283a37309daca590eeebdfc6cc5"},

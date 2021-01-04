@@ -13,15 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+
+from rest_framework import routers
+
+from django.conf.urls import url
+from django.urls import include, path
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-from links.views import IndexView, login, logout
+from links.views import IndexView, login, logout, ArticleViewSet
+
+router = routers.DefaultRouter()
+router.register(r"articles", ArticleViewSet)
 
 urlpatterns = [
-    url(r'^$', IndexView.as_view(), name="index"),
-    url(r'^links/', include('links.urls')),
-    url(r'^admin/', admin.site.urls),
-    url(r'^login$', login, name="login"),
-    url(r'^logout$', logout, name="logout"),
+    url(r"^$", IndexView.as_view(), name="index"),
+    path("v1/", include(router.urls)),
+    url(r"^links/", include("links.urls")),
+    url(r"^admin/", admin.site.urls),
+    url(r"^login$", login, name="login"),
+    url(r"^logout$", logout, name="logout"),
 ]
