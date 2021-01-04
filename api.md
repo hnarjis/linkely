@@ -12,14 +12,27 @@ Conventions used in this document:
 
 Autorized API calls are made using JWT tokens.
 
-### Authenticate
+To use an access token (see
+[`POST /token/`](#post-token-generate-token-using-usernamepassword))
+to authenticate a call to the API, simply set the `Authorization`
+header to `Bearer [access token]`.
 
-Authenticated calls to the API are made by sending a JWT token in the
-header of the request.
+[httpie][httpie] example:
+```
+http linkely.co/v1/articles/ 'Authorization: Bearer [access token]'
+```
+
+curl example:
+```
+curl https://linkely.co/v1/articles/ -H "Authorization: Bearer [access token]"
+```
 
 ### `POST /token/` Generate token using username/password
 
-Tokens are returned by the `POST /token` endpoint.
+Exchange username and password for an access token that can be used to
+send authenticated requests to other endpoints, and a refresh token
+that can be used to generate a new access token without
+reauthenticating.
 
 Request:
 ```
@@ -37,22 +50,6 @@ Response:
   "refresh": "[refresh token]"
 }
 ```
-
-### Using the access token
-
-To use the access token to authenticate a call to the API, simply set
-the `Authorization` header to `Bearer [access token]`.
-
-[httpie][httpie] example:
-```
-http linkely.co/v1/articles/ 'Authorization:Bearer [access token]'
-```
-
-curl example:
-```
-curl http://localhost:8080/v1/articles/ -H "Authorization: Bearer [access token]"
-```
-
 
 ### `POST /token/refresh/` Refreshing the access token
 
@@ -77,7 +74,11 @@ Response:
 }
 ```
 
-## `GET /articles/` List articles
+## Articles
+
+Currently under development and only allows listing all articles.
+
+### `GET /articles/` List articles
 
 List all articles.
 
