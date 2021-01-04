@@ -65,4 +65,10 @@ gulp build
 ```
 
 
+# API
+
+See [the API docs][apidocs]
+
+
 [poetry]: https://python-poetry.org/
+[apidocs]: api.md
