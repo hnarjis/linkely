@@ -1,6 +1,8 @@
 from urllib.parse import urlparse
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from .scraper import scrape, ScraperError
 
 class Article(models.Model):
@@ -43,6 +45,14 @@ class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
     followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
     created = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if self.follower == self.followed:
+            raise ValidationError(_('Cannot follow oneself.'))
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         unique_together = ('follower', 'followed')
