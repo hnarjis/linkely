@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.admin import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.template import loader
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -30,7 +31,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     paginate_by = 25
 
     def get_queryset(self):
-        return Article.objects.order_by("-date")
+        current_user = self.request.user
+        followed_users = current_user.following.values('followed')
+        query = Q(user=current_user) | Q(user__in=followed_users)
+        return Article.objects.filter(query).order_by("-date")
 
 
 @login_required(login_url="/login")
