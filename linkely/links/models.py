@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from .scraper import scrape, ScraperError
 
-
 class Article(models.Model):
     title = models.CharField(max_length=150)
     url = models.URLField(max_length=500)
@@ -39,3 +38,11 @@ class Article(models.Model):
             "url": self.url,
             "user": self.user.username,
         }
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'followed')

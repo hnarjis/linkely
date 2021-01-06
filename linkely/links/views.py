@@ -94,7 +94,6 @@ def search(request):
     querystring = request.GET.get("q", "")
     context = {"search_results": None, "error": None, "search_query": querystring}
 
-    # TODO: empty query should show zero results
     try:
         es = es_client()
         query = {

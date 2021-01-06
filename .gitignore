@@ -5,3 +5,4 @@ db.sqlite3
 frontend/semantic/dist
 .env
 venv
+.DS_Store
