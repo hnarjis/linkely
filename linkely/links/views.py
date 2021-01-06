@@ -10,7 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.admin import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
+from rest_framework import viewsets
+from rest_framework import permissions
 from django.http import Http404
+from .serializers import ArticleSerializer
 from .wiring import es_client
 from .models import Article
 from .scraper import ScraperError
@@ -135,3 +138,12 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return HttpResponseRedirect(reverse("login"))
+
+
+### API
+
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all().order_by("-id")
+    serializer_class = ArticleSerializer
+    permission_classes = [permissions.IsAuthenticated]
