@@ -32,7 +32,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-        followed_users = current_user.following.values('followed')
+        followed_users = current_user.following.values("followed")
         query = Q(user=current_user) | Q(user__in=followed_users)
         return Article.objects.filter(query).order_by("-date")
 
@@ -109,10 +109,15 @@ def search(request):
     except Exception as ex:
         context["error"] = "Something went wrong :( %r" % ex
     else:
-        articles = [
-            Article.objects.get(pk=article["_id"])
-            for article in res.get("hits", []).get("hits", [])
+        current_user = request.user
+        followed_users = current_user.following.values("followed")
+        article_ids = [
+            article["_id"] for article in res.get("hits", []).get("hits", [])
         ]
+        query = (Q(user=current_user) | Q(user__in=followed_users)) & Q(
+            pk__in=article_ids
+        )
+        articles = Article.objects.filter(query).order_by("-date")
 
         context["search_results"] = articles
 
