@@ -1,9 +1,18 @@
 from urllib.parse import urlparse
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as AuthUser
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from .scraper import scrape, ScraperError
+
+
+class User(AuthUser):
+    class Meta:
+        proxy = True
+
+    def follow(self, other):
+        Follow(follower=self, followed=other).save()
+
 
 class Article(models.Model):
     title = models.CharField(max_length=150)
@@ -41,18 +50,26 @@ class Article(models.Model):
             "user": self.user.username,
         }
 
+
 class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
-    followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
+    follower = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="following"
+    )
+    followed = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followers"
+    )
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("follower", "followed")
 
     def clean(self):
         if self.follower == self.followed:
-            raise ValidationError(_('Cannot follow oneself.'))
+            raise ValidationError(_("Cannot follow oneself."))
 
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
 
-    class Meta:
-        unique_together = ('follower', 'followed')
+    def __str__(self):
+        return f"{self.follower}=>{self.followed}"
