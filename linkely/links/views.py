@@ -33,6 +33,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         current_user = self.request.user
         followed_users = current_user.following.values("followed")
+        # TODO: add method on the User that returns this query
         query = Q(user=current_user) | Q(user__in=followed_users)
         return Article.objects.filter(query).order_by("-date")
 
