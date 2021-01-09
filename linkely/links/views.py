@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.admin import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.template import loader
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -30,7 +31,11 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     paginate_by = 25
 
     def get_queryset(self):
-        return Article.objects.order_by("-date")
+        current_user = self.request.user
+        followed_users = current_user.following.values("followed")
+        # TODO: add method on the User that returns this query
+        query = Q(user=current_user) | Q(user__in=followed_users)
+        return Article.objects.filter(query).order_by("-date")
 
 
 @login_required(login_url="/login")
@@ -94,7 +99,6 @@ def search(request):
     querystring = request.GET.get("q", "")
     context = {"search_results": None, "error": None, "search_query": querystring}
 
-    # TODO: empty query should show zero results
     try:
         es = es_client()
         query = {
@@ -106,10 +110,15 @@ def search(request):
     except Exception as ex:
         context["error"] = "Something went wrong :( %r" % ex
     else:
-        articles = [
-            Article.objects.get(pk=article["_id"])
-            for article in res.get("hits", []).get("hits", [])
+        current_user = request.user
+        followed_users = current_user.following.values("followed")
+        article_ids = [
+            article["_id"] for article in res.get("hits", []).get("hits", [])
         ]
+        query = (Q(user=current_user) | Q(user__in=followed_users)) & Q(
+            pk__in=article_ids
+        )
+        articles = Article.objects.filter(query).order_by("-date")
 
         context["search_results"] = articles
 
