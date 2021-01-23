@@ -35,6 +35,7 @@ services:
     depends_on:
       - db
       - es
+      - memcached
 
   nginx:
     image: nginx:1.13.3
@@ -45,3 +46,8 @@ services:
       - "80:80"
     depends_on:
       - web
+
+  memcached:
+    image: memcached:1.6.9-alpine
+    ports:
+      - "11211:11211"
