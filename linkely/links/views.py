@@ -160,3 +160,4 @@ class ArticleViewSet(viewsets.ModelViewSet):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
+    throttle_scope = "registrations"
