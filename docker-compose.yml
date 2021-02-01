@@ -26,12 +26,14 @@ services:
     build: docker/web/
     volumes:
       - .:/src:ro
+      - static:/static:rw
     command: /src/entrypoint.sh
     ports:
       - "8000:8000"
     environment:
       - "POSTGRES_HOST=db"
       - "ES_HOST=es"
+      - "STATIC_ROOT=/static"
     depends_on:
       - db
       - es
@@ -41,7 +43,7 @@ services:
     image: nginx:1.13.3
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./linkely/static:/data/www/static
+      - static:/data/www/static:ro
     ports:
       - "80:80"
     depends_on:
@@ -51,3 +53,6 @@ services:
     image: memcached:1.6.9-alpine
     ports:
       - "11211:11211"
+
+volumes:
+  static:
