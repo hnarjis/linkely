@@ -42,8 +42,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", "pleasechangeme")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", "true", convert=lambda x: x.lower() == "true")
 
-ALLOWED_HOSTS = [env("DJANGO_HOSTNAME", "localhost"), "backend"]
-
+ALLOWED_HOSTS = [env("DJANGO_HOSTNAME", "localhost"), "127.0.0.1", "backend"]
 
 # Application definition
 
@@ -56,12 +55,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "corsheaders",
     "rest_framework",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -172,11 +173,20 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 50,
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.ScopedRateThrottle",
     ],
-    "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "1000/day"},
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "500/day",
+        "user": "5000/day",
+        "registrations": "10/hour",
+    },
 }
+
+# CORS headers
+# https://github.com/adamchainz/django-cors-headers
+# TODO: Set this to something more restrictive
+CORS_ALLOW_ALL_ORIGINS = True

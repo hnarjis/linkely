@@ -11,10 +11,9 @@ from django.contrib.auth.admin import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template import loader
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, mixins, generics
 from django.http import Http404
-from .serializers import ArticleSerializer
+from .serializers import ArticleSerializer, UserRegistrationSerializer
 from .wiring import es_client
 from .models import Article
 from .scraper import ScraperError
@@ -156,3 +155,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all().order_by("-id")
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegistrationSerializer
+    throttle_scope = "registrations"
