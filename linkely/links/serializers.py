@@ -32,3 +32,5 @@ class UserRegistrationSerializer(serializers.Serializer):
     def create(self, validated_data):
         print(validated_data)
         return User.objects.create_user(**validated_data, is_active=False)
+
+    # TODO: Don't return user password hash on creation :)
