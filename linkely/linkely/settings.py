@@ -119,7 +119,7 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
         "LOCATION": env("MEMCACHED_HOSTPORT", "memcached:11211"),
-        "TIMEOUT": int(env("MEMCACHED_TIMEOUT", "300")),
+        "TIMEOUT": env("MEMCACHED_TIMEOUT", "300", convert=int),
     }
 }
 
@@ -165,6 +165,9 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+if env("STATIC_ROOT", None):
+    STATIC_ROOT = env("STATIC_ROOT", None)
 
 
 # REST framework
