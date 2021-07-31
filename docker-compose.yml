@@ -6,13 +6,9 @@ services:
     environment:
       - POSTGRES_USER=linkely
       - POSTGRES_DB=linkely
-    ports:
-      - "5432:5432"
 
   es:
     image: elasticsearch:7.10.1
-    ports:
-      - "9200:9200"
     environment:
       - "discovery.type=single-node"
       - "xpack.security.enabled=false"
@@ -39,15 +35,22 @@ services:
       - es
       - memcached
 
-  nginx:
-    image: nginx:1.13.3
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - static:/data/www/static:ro
+  web_static:
+    image: sebp/lighttpd
     ports:
-      - "80:80"
-    depends_on:
-      - web
+      - "8001:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.static_web.entrypoints=websecure"
+      - "traefik.http.routers.static_web.tls=true"
+      - "traefik.http.routers.static_web.tls.certresolver=myresolver"
+      - "traefik.http.routers.static_web.rule=Host(`linkely.com`)"
+    networks:
+      - proxy
+    volumes:
+      - static:/var/www/localhost/htdocs:ro
+      - $PWD/docker/static_web/:/etc/lighttpd:ro
+    tty: true
 
   memcached:
     image: memcached:1.6.9-alpine
@@ -56,3 +59,8 @@ services:
 
 volumes:
   static:
+
+networks:
+  proxy:
+    external:
+      name: "traefik_proxy"

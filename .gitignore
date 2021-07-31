@@ -6,3 +6,4 @@ frontend/semantic/dist
 .env
 venv
 .DS_Store
+db_dumps/**
