@@ -4,8 +4,10 @@ services:
   db:
     image: postgres:9.6.3
     environment:
-      - POSTGRES_USER=linkely
-      - POSTGRES_DB=linkely
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped
 
   es:
     image: elasticsearch:7.10.1
@@ -17,6 +19,13 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    restart: unless-stopped
+
+  memcached:
+    image: memcached:1.6.9-alpine
+    ports:
+      - "11211:11211"
+    restart: unless-stopped
 
   web:
     build: docker/web/
@@ -34,33 +43,51 @@ services:
       - db
       - es
       - memcached
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.linkely.entrypoints=websecure"
+      - "traefik.http.routers.linkely.tls=true"
+      - "traefik.http.routers.linkely.tls.certresolver=myresolver"
+      - "traefik.http.routers.linkely.rule=Host(`linkely.co`)"
+      - "traefik.http.middlewares.compress-traffic.compress=true"
+      - "traefik.http.routers.linkely.middlewares=compress-traffic"
+      - "traefik.http.services.linkely.loadbalancer.server.port=8000"
+    links:
+      - "db:db"
+      - "es:es"
+      - "memcached:memcached"
+      
+    networks:
+      - default
+      - traefik_proxy
+
+    restart: unless-stopped
 
   web_static:
     image: sebp/lighttpd
-    ports:
-      - "8001:80"
+
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.static_web.entrypoints=websecure"
-      - "traefik.http.routers.static_web.tls=true"
-      - "traefik.http.routers.static_web.tls.certresolver=myresolver"
-      - "traefik.http.routers.static_web.rule=Host(`linkely.com`)"
+      - "traefik.http.routers.linkely_static.entrypoints=websecure"
+      - "traefik.http.routers.linkely_static.tls=true"
+      - "traefik.http.routers.linkely_static.tls.certresolver=myresolver"
+      - "traefik.http.routers.linkely_static.rule=Host(`static.linkely.co`)"
+      - "traefik.http.middlewares.compress-static.compress=true"
+      - "traefik.http.routers.linkely_static.middlewares=compress-static"
+      - "traefik.http.services.linkely_static.loadbalancer.server.port=80"
     networks:
-      - proxy
+      - default
+      - traefik_proxy
     volumes:
       - static:/var/www/localhost/htdocs:ro
       - $PWD/docker/static_web/:/etc/lighttpd:ro
     tty: true
 
-  memcached:
-    image: memcached:1.6.9-alpine
-    ports:
-      - "11211:11211"
+    restart: unless-stopped
 
 volumes:
   static:
 
 networks:
-  proxy:
-    external:
-      name: "traefik_proxy"
+  traefik_proxy:
+    external: true

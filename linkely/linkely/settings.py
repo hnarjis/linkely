@@ -41,6 +41,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", "pleasechangeme")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", "true", convert=lambda x: x.lower() == "true")
+# DEBUG = True
 
 ALLOWED_HOSTS = [env("DJANGO_HOSTNAME", "localhost"), "127.0.0.1", "backend"]
 
@@ -100,7 +101,7 @@ DATABASES = {
         "NAME": env("POSTGRES_DB", "linkely"),
         "USER": env("POSTGRES_USER", "linkely"),
         "PASSWORD": env("POSTGRES_PASSWORD", ""),
-        "HOST": env("POSTGRES_HOST", "localhost"),
+        "HOST": env("POSTGRES_HOST", "db"),
         "PORT": "5432",
     },
     "elasticsearch": {
@@ -160,7 +161,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = "http://localhost:8001/"
+STATIC_URL = env("STATIC_URL", "/static")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
