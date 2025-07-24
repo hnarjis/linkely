@@ -1,6 +1,17 @@
 # linkely
 Keep track of shared articles
 
+## Technical overview
+
+`linkely` is a Django-based web application that allows users to share and track articles. The main components are:
+
+- **Backend**: Django application using Django ORM to interact with PostgreSQL and Elasticsearch for full-text search.
+- **API**: RESTful endpoints documented in [API docs](api.md) built with Django REST Framework.
+- **Frontend**: Semantic UI-powered interface, source files located under `frontend/semantic`, built with Gulp.
+- **Data ingestion**: Scraper and management commands to fetch and process articles.
+- **Containers**: Docker Compose configuration orchestrates services: web, database, and Elasticsearch.
+- **Dependencies**: Python dependencies managed with Poetry; Node dependencies with npm.
+
 ## Getting started
 
 Prerequisites:
