@@ -17,13 +17,13 @@ Keep track of shared articles
 Prerequisites:
 
 * Docker
-* docker-compose
+* docker compose
 
 Clone the repo, then run:
 
 ```
 $ cp example.env .env
-$ docker-compose up
+$ docker compose up
 ```
 
 Now you should have the application running on [localhost](http://localhost:8000).
@@ -53,13 +53,13 @@ $ poetry shell
 ```
 
 You can now use `manage.py` like in a regular Django application. The
-easiest way to run service dependencies is to start docker-compose
+easiest way to run service dependencies is to start docker compose
 (see above). The web server will now run both locally (outside Docker)
 and in Docker, so a different port needs to be used for the local
 server, `8080` for example:
 
 ```
-$ docker-compose up -d  # if it's not already running
+$ docker compose up -d  # if it's not already running
 $ poetry shell          # if you're not already in a shell
 $ ./linkely/manage.py runserver 8080
 ```
@@ -80,13 +80,13 @@ Other useful manage.py commands are:
 
 ### Run tests
 
-Start docker-compose and configure the app to use the database running in Docker:  
+Start docker compose and configure the app to use the database running in Docker:  
 
 ```
-$ docker-compose up -d
+$ docker compose up -d
 $ cd linkely
 $ POSTGRES_HOST=localhost ./manage.py test
-$ docker-compose down
+$ docker compose down
 ```
 
 ## Build front-end requirements
