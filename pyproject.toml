@@ -6,7 +6,7 @@ authors = ["Narjis Hachilif <hnarjis@gmail.com>", "André Laszlo <andre@laszlo.n
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Django = "^3.1.4"
+Django = "^4.2.28"
 psycopg2-binary = "^2.8.6"
 requests = "^2.25.1"
 beautifulsoup4 = "^4.9.3"
